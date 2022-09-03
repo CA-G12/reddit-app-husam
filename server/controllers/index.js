@@ -3,11 +3,11 @@ const Validation = require('../Validation');
 
 class Controllers {
   static allPost(req, res) {
-    Queries.selectPosts().then((data) => res.json(data));
+    Queries.selectPosts().then((data) => res.json(data.rows));
   }
 
   static alluser(req, res) {
-    Queries.selectUsers().then((data) => res.json(data));
+    Queries.selectUsers().then((data) => res.json(data.rows));
   }
 
   static signup(req, res, next) {
