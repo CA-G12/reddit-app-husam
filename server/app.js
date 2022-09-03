@@ -1,11 +1,11 @@
 const { join } = require('path');
 const express = require('express');
-// const router1 = require('./router');
+const router = require('./router');
 
 class App {
-  constructor(router) {
+  constructor(Customrouter) {
     this.app = express();
-    // this.router = router;
+    this.router = Customrouter;
 
     this.initMiddelwares();
     this.initRoutes();
@@ -18,10 +18,10 @@ class App {
   }
 
   initRoutes() {
-    // this.app.use('/api/v1', this.router);
+    this.app.use('/api/v1', this.router);
   }
 }
 
-const { app } = new App();
-console.log(app)
+const { app } = new App(router);
+
 module.exports = app;
