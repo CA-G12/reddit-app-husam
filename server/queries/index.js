@@ -13,8 +13,8 @@ class Queries {
     return connection.query('INSERT INTO users(email , password, username) VALUES ($1,$2,$3 ) RETURNING *', [email, password, username]);
   }
 
-  static login(email) {
-    return connection.query('SELECT * FROM users WHERE email=$1', [email]);
+  static login(username) {
+    return connection.query('SELECT * FROM users WHERE users.username = $1', [username]);
   }
 }
 
