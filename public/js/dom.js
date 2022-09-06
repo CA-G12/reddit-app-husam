@@ -188,4 +188,4 @@ fetch('/api/v1/allPost').then((data) => data.json()).then((result) => {
     iComment.classList.add('fa-comment');
     comment.appendChild(iComment);
   });
-});
+}).catch(err => console.log(err));
