@@ -11,5 +11,5 @@ router.get('/logout', Controllers.logout);
 router.post('/addPost', Controllers.addPost);
 router.delete('/deletePost', Controllers.deletePost);
 router.get('/myPost', Controllers.myPost);
-router.put('/updateUserInfo', Controllers.update)
+router.put('/updateUserInfo', Controllers.update);
 module.exports = router;
