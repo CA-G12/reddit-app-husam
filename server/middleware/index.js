@@ -26,7 +26,7 @@ class Middleware {
             if (result) {
               generateToken(data.rows[0]).then((token) => {
                 res.cookie('token', token).json({msg: 'login successfully' });
-              }).catch(() => res.jsin({ msg: 'inernal server error' }));
+              }).catch(() => res.json({ msg: 'inernal server error' }));
             } else {
               res.json({ msg: 'password is not matching ', status: '401' });
             }
