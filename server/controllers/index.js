@@ -45,6 +45,34 @@ class Controllers {
   static logout(req, res) {
     res.clearCookie('token').send('logout');
   }
+
+  static addPost(req, res) {
+    console.log(req.body);
+    const {
+      content, img, vedio, varg, user_id,
+    } = req.body;
+    Queries.addPost({
+      content, img, vedio, varg, user_id,
+    }).then(() => res.json({ msg: 'successfuly post' }));
+  }
+
+  static deletePost(req, res) {
+    const { post_id, user_id } = req.body;
+    Queries.deletePost({ post_id, user_id }).then((data) => res.send('delete success')).catch((err) => res.json(err));
+  }
+
+  static myPost(req, res) {
+    const { token } = req.cookies;
+    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+      if (err) return res.send(err);
+      Queries.myPost(decoded.id).then((data) => res.json({ post: data, userInfo: decoded }));
+    });
+  }
+
+  static update(req, res) {
+    const { user_id, username } = req.body;
+    Queries.update({ user_id, username }).then(console.log);
+  }
 }
 
 module.exports = Controllers;
