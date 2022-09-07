@@ -1,10 +1,10 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-const { DEVELOPMENT_URL_DB, PRODUCTION_URL_DB } = process.env;
+const { DEVELOPMENT_URL_DB, DATABASE_URL } = process.env;
 let database = '';
 if (process.env.NODE_ENV === 'production') {
-  database = PRODUCTION_URL_DB;
+  database = DATABASE_URL;
 } else {
   database = DEVELOPMENT_URL_DB;
 }
