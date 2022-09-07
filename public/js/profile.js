@@ -124,7 +124,11 @@ fetch('/api/v1/myPost').then((data) => data.json()).then((result) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ user_id: ele.user_id, username: username.value || ele.username }),
-      }).then(console.log);
+      }).then((data) => data.json())
+        .then((newData) => {
+          profile.textContent = newData.rows[0].username;
+          profile.appendChild(profileLink);
+        }).catch(err => console.log(err,'err>>>>'));
     });
   });
 });

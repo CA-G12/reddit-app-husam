@@ -13,6 +13,7 @@ const close = document.querySelectorAll('.fa-xmark');
 const signupLogin = document.querySelector('.signup-login');
 const trending = document.querySelector('.trending');
 const postsSection = document.querySelector('.posts-section');
+const error = document.querySelector('.error');
 const whenUserLogin = (data) => {
   trending.textContent = '';
   signupLogin.textContent = '';
@@ -62,7 +63,7 @@ const whenUserLogin = (data) => {
       body: JSON.stringify({
         content: postInput.value, img: uploadFile.value || '', vedio: uploadFile.value || '', varg: 0, user_id: data.id,
       }),
-    }).then((data) => data.json()).then(() => {
+    }).then((dataa) => dataa.json()).then(() => {
       window.location.reload();
     });
   });
@@ -91,7 +92,7 @@ loginButton.addEventListener('click', () => {
     if (data.msg === 'login successfully') {
       loginPop.classList.toggle('active');
     }
-  }).catch((err) => console.log(err, 'err'));
+  }).catch((err) => console.log(err, 'login err'));
 });
 fetch('/api/v1/checklogged').then((data) => data.json()).then((data) => {
   if (!data.msg) {
@@ -111,8 +112,14 @@ signupButton.addEventListener('click', () => {
         password: passwordSignup.value,
       },
     ),
-  }).then((data) => data.json())
-    .catch(console.log);
+  }).then((data) => data.json()).then((result) => {
+    if (result.msg.detail) {
+      throw result.msg;
+    }
+  })
+    .catch((errsignup) => {
+      error.textContent = errsignup.detail;
+    });
 });
 fetch('/api/v1/allPost').then((data) => data.json()).then((result) => {
   const revers = result.reverse();
@@ -188,4 +195,4 @@ fetch('/api/v1/allPost').then((data) => data.json()).then((result) => {
     iComment.classList.add('fa-comment');
     comment.appendChild(iComment);
   });
-}).catch(err => console.log(err));
+}).catch((err) => console.log(err, 'err'));

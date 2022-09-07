@@ -7,11 +7,11 @@ class Middleware {
   static hashPassword(req, res) {
     const { password } = req.body;
     bcrypt.hash(password, 10, (err, hash) => {
-      if (err) return res.send(err);
+      if (err) return res.json(err);
       Queries.addUser({ ...req.body, password: hash })
-        .then(() => res.status(201).send('successfully operation '))
+        .then(() => res.status(201).json({ msg: 'successfully operation ' }))
         .catch(
-          (errData) => res.status(400).json(errData.detail),
+          (errData) => res.json({ msg: errData }),
         );
     });
   }
@@ -22,10 +22,10 @@ class Middleware {
         if (data.rowCount) {
           bcrypt.compare(req.body.password, data.rows[0].password, (err, result) => {
             if (err) return res.send(err);
-            console.log(result)
+            console.log(result);
             if (result) {
               generateToken(data.rows[0]).then((token) => {
-                res.cookie('token', token).json({msg: 'login successfully' });
+                res.cookie('token', token).json({ msg: 'login successfully' });
               }).catch(() => res.json({ msg: 'inernal server error' }));
             } else {
               res.json({ msg: 'password is not matching ', status: '401' });

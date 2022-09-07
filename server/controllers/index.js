@@ -47,7 +47,6 @@ class Controllers {
   }
 
   static addPost(req, res) {
-    console.log(req.body);
     const {
       content, img, vedio, varg, user_id,
     } = req.body;
@@ -71,7 +70,9 @@ class Controllers {
 
   static update(req, res) {
     const { user_id, username } = req.body;
-    Queries.update({ user_id, username }).then(console.log);
+    Queries.update({ user_id, username })
+      .then((data) => res.json(data))
+      .catch((err) => res.json(err));
   }
 }
 

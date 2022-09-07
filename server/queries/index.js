@@ -10,7 +10,7 @@ class Queries {
   }
 
   static addUser({ email, password, username }) {
-    return connection.query('INSERT INTO users(email , password, username) VALUES ($1,$2,$3 ) RETURNING *', [email, password, username]);
+    return connection.query('INSERT INTO users(email , password, username) VALUES ($1,$2,$3 )  RETURNING *', [email, password, username]);
   }
 
   static login(username) {
