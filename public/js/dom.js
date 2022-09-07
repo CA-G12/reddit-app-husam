@@ -115,6 +115,8 @@ signupButton.addEventListener('click', () => {
   }).then((data) => data.json()).then((result) => {
     if (result.msg.detail) {
       throw result.msg;
+    } else {
+      loginPop.classList.toggle('active');
     }
   })
     .catch((errsignup) => {
@@ -122,7 +124,7 @@ signupButton.addEventListener('click', () => {
     });
 });
 fetch('/api/v1/allPost').then((data) => data.json()).then((result) => {
-  console.log(result)
+  console.log(result);
   if (result.length !== 0) {
     const revers = result.reverse();
     revers.forEach((ele) => {
@@ -155,10 +157,10 @@ fetch('/api/v1/allPost').then((data) => data.json()).then((result) => {
       userInfo.className = 'user-info';
       postHeader.appendChild(userInfo);
       const headerImg = document.createElement('img');
-      headerImg.src = 'https://pps.whatsapp.net/v/t61.24694-24/197091151_354939723197695_1626617075516079400_n.jpg?ccb=11-4&oh=01_AVx9pfvePCzlpYw1aKDtoQb_7Es-5Am-44PL127m1af0DQ&oe=632265A0';
+      headerImg.src = ele.imag || 'https://pps.whatsapp.net/v/t61.24694-24/197091151_354939723197695_1626617075516079400_n.jpg?ccb=11-4&oh=01_AVx9pfvePCzlpYw1aKDtoQb_7Es-5Am-44PL127m1af0DQ&oe=632265A0';
       userInfo.appendChild(headerImg);
       const h3Header = document.createElement('h3');
-      h3Header.textContent = 'husam';
+      h3Header.textContent = ele.username;
       userInfo.appendChild(h3Header);
       const joinBtn = document.createElement('button');
       joinBtn.className = 'join-button';

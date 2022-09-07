@@ -2,7 +2,7 @@ const connection = require('../database/connection');
 
 class Queries {
   static selectPosts() {
-    return connection.query('SELECT * FROM posts');
+    return connection.query('SELECT * FROM posts JOIN users on posts.user_id = users.id ');
   }
 
   static selectUsers() {
