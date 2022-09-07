@@ -8,10 +8,6 @@ class Controllers {
     Queries.selectPosts().then((data) => res.json(data.rows));
   }
 
-  static alluser(req, res) {
-    Queries.selectUsers().then((data) => res.json(data.rows));
-  }
-
   static signup(req, res, next) {
     Validation.signupValidation(req)
       .then(() => next())

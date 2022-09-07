@@ -122,6 +122,7 @@ signupButton.addEventListener('click', () => {
     });
 });
 fetch('/api/v1/allPost').then((data) => data.json()).then((result) => {
+  console.log(result)
   if (result.length !== 0) {
     const revers = result.reverse();
     revers.forEach((ele) => {
