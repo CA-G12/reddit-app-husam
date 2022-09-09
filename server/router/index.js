@@ -11,4 +11,5 @@ router.post('/addPost', Controllers.addPost);
 router.delete('/deletePost', Controllers.deletePost);
 router.get('/myPost', Controllers.myPost);
 router.put('/updateUserInfo', Controllers.update);
+router.post('/voteUp', Controllers.voteUp);
 module.exports = router;

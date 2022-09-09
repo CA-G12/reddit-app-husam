@@ -20,7 +20,7 @@ class Controllers {
       });
   }
 
-  static checkLoggedUser(req, res) {
+  static checkLoggedUser(req, res, next) {
     if (!req.cookies.token) {
       res.send({ msg: 'no logged user' });
     } else {
@@ -44,10 +44,10 @@ class Controllers {
 
   static addPost(req, res) {
     const {
-      content, img, vedio, varg, user_id,
+      content, img, vedio, vote, user_id,
     } = req.body;
     Queries.addPost({
-      content, img, vedio, varg, user_id,
+      content, img, vedio, vote, user_id,
     }).then(() => res.json({ msg: 'successfuly post' }));
   }
 
@@ -65,10 +65,15 @@ class Controllers {
   }
 
   static update(req, res) {
-    const { user_id, username } = req.body;
-    Queries.update({ user_id, username })
+    const { userId, username, imag } = req.body;
+    Queries.update({ userId, username, imag })
       .then((data) => res.json(data))
       .catch((err) => res.json(err));
+  }
+
+  static voteUp(req, res) {
+    const { vote, id } = req.body;
+    Queries.voteUp({ vote, id }).then(console.log);
   }
 }
 

@@ -18,11 +18,11 @@ class Queries {
   }
 
   static addPost({
-    content, img, vedio, varg, user_id,
+    content, img, vedio, vote, user_id,
   }) {
     return connection.query(
-      'INSERT INTO posts (content, img, vedio, varg, user_id) VALUES ($1,$2,$3,$4,$5) RETURNING *',
-      [content, img, vedio, varg, user_id],
+      'INSERT INTO posts (content, img, vedio, vote, user_id) VALUES ($1,$2,$3,$4,$5) RETURNING *',
+      [content, img, vedio, vote, user_id],
     );
   }
 
@@ -35,8 +35,12 @@ class Queries {
     return connection.query('SELECT * FROM posts WHERE user_id = $1', [id]);
   }
 
-  static update({ user_id, username }) {
-    return connection.query('UPDATE users SET username = $1 WHERE id = $2 RETURNING *', [username, user_id]);
+  static update({ userId, username, imag }) {
+    return connection.query('UPDATE users SET username = $1, imag=$3 WHERE id = $2 RETURNING *', [username, userId, imag]);
+  }
+
+  static voteUp({ vote , id}) {
+    return connection.query('UPDATE posts SET vote = $1 WHERE id = $2 RETURNING *', [vote, id]);
   }
 }
 

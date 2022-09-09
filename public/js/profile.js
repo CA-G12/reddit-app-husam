@@ -2,9 +2,10 @@ const myPost = document.querySelector('.my_post');
 const signupLogin = document.querySelector('.signup-login');
 const userInfoUpdata = document.querySelector('.user_info');
 const username = document.querySelector('#username');
-// const imgUrl = document.querySelector('#img');
+const imgUrl = document.querySelector('#img');
+const update = document.querySelector('.update');
 fetch('/api/v1/myPost').then((data) => data.json()).then((result) => {
-  console.log(result);  
+  console.log(result);
   signupLogin.textContent = '';
   signupLogin.style.display = 'flex';
   signupLogin.style.alignItems = 'center';
@@ -42,7 +43,7 @@ fetch('/api/v1/myPost').then((data) => data.json()).then((result) => {
       i.classList.add('fa-arrow-up');
       div.appendChild(i);
       const span = document.createElement('span');
-      span.textContent = ele.varg;
+      span.textContent = ele.vote;
       div.appendChild(span);
       const i1 = document.createElement('i');
       i1.classList.add('fa-solid');
@@ -58,7 +59,7 @@ fetch('/api/v1/myPost').then((data) => data.json()).then((result) => {
       userInfo.className = 'user-info';
       postHeader.appendChild(userInfo);
       const headerImg = document.createElement('img');
-      headerImg.src = result.userInfo.imag || 'https://pps.whatsapp.net/v/t61.24694-24/197091151_354939723197695_1626617075516079400_n.jpg?ccb=11-4&oh=01_AVx9pfvePCzlpYw1aKDtoQb_7Es-5Am-44PL127m1af0DQ&oe=632265A0';
+      headerImg.src = result.userInfo.imag || 'https://keysight-h.assetsadobe.com/is/image/content/dam/keysight/en/img/about/corporate-social-responsibility/csr_environment_1200x900.png';
       userInfo.appendChild(headerImg);
       const h3Header = document.createElement('h3');
       h3Header.textContent = result.userInfo.username;
@@ -115,7 +116,6 @@ fetch('/api/v1/myPost').then((data) => data.json()).then((result) => {
           body: JSON.stringify({ post_id: ele.id, user_id: ele.user_id }),
         }).then((res) => res.json()).then(console.log);
       });
-
       userInfoUpdata.addEventListener('click', (e) => {
         e.preventDefault();
         fetch('/api/v1/updateUserInfo', {
@@ -123,12 +123,23 @@ fetch('/api/v1/myPost').then((data) => data.json()).then((result) => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ user_id: ele.user_id, username: username.value || ele.username }),
+          body: JSON.stringify(
+            {
+              userId: ele.user_id,
+              username: username.value || result.userInfo.username,
+              imag: imgUrl.value || result.userInfo.imag,
+            },
+          ),
         }).then((data) => data.json())
           .then((newData) => {
             profile.textContent = newData.rows[0].username;
             profile.appendChild(profileLink);
-          }).catch((err) => console.log(err, 'err>>>>'));
+            username.value = '';
+            imgUrl.vaule = '';
+            update.textContent = 'update success';
+          }).catch((err) => {
+            update.textContent = err;
+          });
       });
     });
   } else {

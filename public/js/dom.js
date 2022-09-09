@@ -14,6 +14,7 @@ const signupLogin = document.querySelector('.signup-login');
 const trending = document.querySelector('.trending');
 const postsSection = document.querySelector('.posts-section');
 const error = document.querySelector('.error');
+const errorLogin = document.querySelector('.error_login');
 const whenUserLogin = (data) => {
   trending.textContent = '';
   signupLogin.textContent = '';
@@ -61,7 +62,7 @@ const whenUserLogin = (data) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        content: postInput.value, img: uploadFile.value || '', vedio: uploadFile.value || '', varg: 0, user_id: data.id,
+        content: postInput.value, img: uploadFile.value || '', vedio: uploadFile.value || '', vote: 0, user_id: data.id,
       }),
     }).then((dataa) => dataa.json()).then(() => {
       window.location.reload();
@@ -91,8 +92,11 @@ loginButton.addEventListener('click', () => {
   }).then((data) => data.json()).then((data) => {
     if (data.msg === 'login successfully') {
       loginPop.classList.toggle('active');
+      window.location.reload();
+    } else {
+      throw data;
     }
-  }).catch((err) => console.log(err, 'login err'));
+  }).catch((err) => { errorLogin.textContent = err.msg; });
 });
 fetch('/api/v1/checklogged').then((data) => data.json()).then((data) => {
   if (!data.msg) {
@@ -116,7 +120,7 @@ signupButton.addEventListener('click', () => {
     if (result.msg.detail) {
       throw result.msg;
     } else {
-      loginPop.classList.toggle('active');
+      signupPop.classList.toggle('active');
     }
   })
     .catch((errsignup) => {
@@ -136,17 +140,32 @@ fetch('/api/v1/allPost').then((data) => data.json()).then((result) => {
       post.appendChild(sidBar);
       const div = document.createElement('div');
       sidBar.appendChild(div);
-      const i = document.createElement('i');
-      i.classList.add('fa-solid');
-      i.classList.add('fa-arrow-up');
-      div.appendChild(i);
+      const iUp = document.createElement('i');
+      iUp.classList.add('fa-solid');
+      iUp.classList.add('fa-arrow-up');
+      div.appendChild(iUp);
       const span = document.createElement('span');
-      span.textContent = ele.varg;
+      span.textContent = ele.vote;
       div.appendChild(span);
-      const i1 = document.createElement('i');
-      i1.classList.add('fa-solid');
-      i1.classList.add('fa-arrow-down');
-      div.appendChild(i1);
+      const iDown = document.createElement('i');
+      iDown.classList.add('fa-solid');
+      iDown.classList.add('fa-arrow-down');
+      div.appendChild(iDown);
+      iUp.addEventListener('click', () => {
+        console.log(ele.vote_up);
+        if (ele.vote_up) {
+          fetch('/api/v1/voteUp', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ vote: ele.vote + 1, id: ele.id }),
+          })
+            .then((data) => data.json())
+            .then(console.log)
+            .catch((err) => console.log(err, 'err'));
+        }
+      });
       const postContent = document.createElement('div');
       postContent.className = 'post-content';
       post.appendChild(postContent);
@@ -157,7 +176,7 @@ fetch('/api/v1/allPost').then((data) => data.json()).then((result) => {
       userInfo.className = 'user-info';
       postHeader.appendChild(userInfo);
       const headerImg = document.createElement('img');
-      headerImg.src = ele.imag || 'https://pps.whatsapp.net/v/t61.24694-24/197091151_354939723197695_1626617075516079400_n.jpg?ccb=11-4&oh=01_AVx9pfvePCzlpYw1aKDtoQb_7Es-5Am-44PL127m1af0DQ&oe=632265A0';
+      headerImg.src = ele.imag || 'https://keysight-h.assetsadobe.com/is/image/content/dam/keysight/en/img/about/corporate-social-responsibility/csr_environment_1200x900.png';
       userInfo.appendChild(headerImg);
       const h3Header = document.createElement('h3');
       h3Header.textContent = ele.username;

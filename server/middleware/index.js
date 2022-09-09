@@ -22,7 +22,6 @@ class Middleware {
         if (data.rowCount) {
           bcrypt.compare(req.body.password, data.rows[0].password, (err, result) => {
             if (err) return res.send(err);
-            console.log(result);
             if (result) {
               generateToken(data.rows[0]).then((token) => {
                 res.cookie('token', token).json({ msg: 'login successfully' });
